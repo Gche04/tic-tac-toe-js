@@ -1,0 +1,83 @@
+
+:root{
+    --col1: rgb(7, 165, 165);
+    --col2: rgba(250, 215, 170, 0.856);
+    --col3: rgb(36, 33, 33);
+    --col4: rgb(248, 243, 237);
+}
+
+body{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    padding: 0px;
+    margin: 0px;
+    font-size: 2rem;
+    color: var(--col3);
+}
+
+.form, .game-body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: var(--col1);
+}
+
+#form, #board{
+    background-color: var(--col4);
+    border: 3px solid var(--col2);
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 15px;
+}
+
+input[type^="radio"], input[type^="checkbox"]{
+    accent-color: var(--col1);
+}
+
+#submit, #replay{
+    border-style: none;
+    padding: 10px;
+    border-radius: 20px;
+
+}
+
+#submit{
+    background-color: var(--col1);
+    font-size: 1rem;
+}
+
+#replay{
+    background-color: var(--col2);
+    font-size: 2rem;
+}
+
+#node-up{
+    text-align: center;
+}
+
+#board{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#board > div{
+    text-align: center;
+    padding: 40px;
+    font-size: 3rem;
+}
+
+.a0, .a1, .a2, .a3, .a4, .a5{
+    border-bottom: 5px solid red;
+}
+
+.a0, .a1, .a3, .a4, .a6, .a7{
+    border-right: 5px solid red;
+}
+
+#win{
+    color: red;
+    font-weight: bolder;
+    font-size: 4rem;
+}

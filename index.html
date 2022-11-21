@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Tic-Tac-Toe</title>
+</head>
+<body>
+    
+    <div class="game-body">
+        <div class="game">
+            <div id="node-up"></div>
+
+            <div id="board">
+                <div id="a0" class="a0"> . </div>
+                <div id="a1" class="a1"> . </div>
+                <div id="a2" class="a2"> . </div>
+                <div id="a3" class="a3"> . </div>
+                <div id="a4" class="a4"> . </div>
+                <div id="a5" class="a5"> . </div>
+                <div id="a6" class="a6"> . </div>
+                <div id="a7" class="a7"> . </div>
+                <div id="a8" class="a8"> . </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form">
+        <form id="form" action="">
+            <p>Player one pick symbol</p>
+
+            <input type="radio" name="symbol" id="x" value="X">
+            <label for="x"> X </label><br><br>
+            
+            <input type="radio" name="symbol" id="o" value="O">
+            <label for="o"> O </label><br><br>
+
+            <input type="checkbox" name="ai" id="ai" value="ai">
+            <label for="ai"> play with computer </label><br><br>
+
+            <input id="submit" type="submit" value="START">
+        </form>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
