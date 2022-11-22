@@ -41,14 +41,15 @@ const gameBoard = (function() {
         for (let i = 0; i < slot.length; i++) {
             slot[i].addEventListener('click', function (e) {
                 
-                if (!_aWinner) {
+                if (!_aWinner || _aTie()) {
                     _turn();
                     _run("#node-up", player, e);
                     if (_notIllegalMove("#node-up")) {
                         num++;
                         if (!_aWinner && againstAi) {
-                            
-                            _aiPlay();
+                            if (!_aTie()) {
+                                _aiPlay();   
+                            }
                         }
                     }
                 }
@@ -163,7 +164,7 @@ const gameBoard = (function() {
     const _run = (messagerId, player, e) => {
         let intValue;
         if (e == null) {
-            intValue = player.randNum(board);
+            intValue = player.move(board);
         } else {
             intValue = _idToInt(e.target.id);
         }
@@ -176,7 +177,7 @@ const gameBoard = (function() {
         } else {
             displayController.addToDom(messagerId, "ILLEGAL");
         }
-
+        
         if (_aWinner || _aTie()) {
             let message;
             if (_aWinner) {
@@ -188,6 +189,7 @@ const gameBoard = (function() {
             displayController.createAddToDom(messagerId, "button", "id", "replay", "rematch");
             document.querySelector("#replay").addEventListener('click', _reset);
         }
+        
     }
 
     const _notIllegalMove = (messageId) => {
@@ -211,7 +213,7 @@ const computer = (symbol) => {
     const isAi = true;
     const getPlayerSymbol = () => symbol;
 
-    const randNum = (arr) => {
+    const _randNum = (arr) => {
         const a = [];
         for (let i = 0; i < arr.length; i++) {
             if (arr[i] == "") {
@@ -222,15 +224,114 @@ const computer = (symbol) => {
         return a[rand];
     }
 
-    /*const move = (arr, a, ) => {
-        for (let i = 0; i < arr.length; i++) {
+    const _givesTie = (arr) => {
+        for (let i = 0; i < board.length; i++) {
             if (arr[i] == "") {
-                a.push(i);
+                return false;
             }
         }
-    }*/
+        return true;
+    }
 
-    return {getPlayerSymbol, randNum, isAi};
+    const _givesWin = (arr, sym) => {
+        if (arr[0] == sym && arr[1] == arr[0] && arr[2] == arr[0]) {
+            return true;
+        }else if (arr[3] == sym && arr[4] == arr[3] && arr[5] == arr[3]) {
+            return true;
+        }else if (arr[6] == sym && arr[7] == arr[6] && arr[8] == arr[6]) {
+            return true;
+        }else if (arr[6] == sym && arr[3] == arr[0] && arr[6] == arr[0]) {
+            return true;
+        }else if (arr[1] == sym && arr[4] == arr[1] && arr[7] == arr[1]) {
+            return true;
+        }else if (arr[2] == sym && arr[5] == arr[2] && arr[8] == arr[2]) {
+            return true;
+        }else if (arr[0] == sym && arr[4] == arr[0] && arr[8] == arr[0]) {
+            return true;
+        }else if (arr[2] == sym && arr[4] == arr[2] && arr[6] == arr[2]) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    const _posibbleMoves = (arr) => {
+        const moves = [];
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] == "") {
+                moves.push(i);
+            }
+        }
+        return moves;
+    }
+
+    const move = (arr) => {
+        const  result = [];
+        const moves = _posibbleMoves(arr);
+        var score = 1;
+        var bestMove = null;
+
+        if (bestMove == null) {
+            for (let i = 0; i < moves.length; i++) {
+                var position = moves[i];
+                arr[position] = getPlayerSymbol();
+                
+                if (_givesWin(arr, getPlayerSymbol())) {
+                    result.push([1, position]);
+                }else if (_giveslose(arr)) {
+                    arr[position] = "";
+                    continue;
+                }else if (_givesTie(arr)){
+                    result.push([0, position]);
+                }else{
+                    move(arr);
+                }
+                arr[position] = "";
+            }
+    
+            for (let i = 0; i < result.length; i++) {
+                var el = result[i]; 
+                if (el[0] == 1) {
+                    return el[1];
+                } 
+                if (el[0] < score) {
+                    score = el[0];
+                    bestMove = el[1];
+                }
+            }
+        }
+        if (bestMove == null) {
+            return _randNum(arr);
+        }
+            
+        return bestMove;
+    }
+
+    const _giveslose = (arr) => {
+        var oppSym;
+
+        if (getPlayerSymbol() == "X") {
+            oppSym = "O";
+        } else {
+            oppSym = "X";
+        }
+
+        const moves = _posibbleMoves(arr);
+
+        for (let i = 0; i < moves.length; i++) {
+            var position = moves[i];
+            arr[position] = oppSym;
+            
+            if (_givesWin(arr, oppSym)) {
+                arr[position] = "";
+                return true;
+            }
+            arr[position] = "";
+        }
+        return false;
+    }
+
+    return {getPlayerSymbol, isAi, move, _randNum};
 };
 
 
