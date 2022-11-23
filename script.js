@@ -271,14 +271,6 @@ const computer = (symbol) => {
         if (moves.length == 9) {
             return _randNum(arr);
         }
-
-        if (moves.length == 8) {
-            if (arr[4] == "") {
-                return 4;
-            } else {
-                return _randNum(arr);
-            }
-        }
         return null;
     }
 
