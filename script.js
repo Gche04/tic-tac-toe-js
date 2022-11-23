@@ -265,11 +265,30 @@ const computer = (symbol) => {
         return moves;
     }
 
+    const _opening = (arr) => {
+        const moves = _posibbleMoves(arr);
+
+        if (moves.length == 9) {
+            return _randNum(arr);
+        }
+
+        if (moves.length == 8) {
+            if (arr[4] == "") {
+                return 4;
+            } else {
+                return _randNum(arr);
+            }
+        }
+        return null;
+    }
+
     const move = (arr) => {
         const  result = [];
         const moves = _posibbleMoves(arr);
         var score = 1;
         var bestMove = null;
+
+        bestMove = _opening(arr);
 
         if (bestMove == null) {
             for (let i = 0; i < moves.length; i++) {
